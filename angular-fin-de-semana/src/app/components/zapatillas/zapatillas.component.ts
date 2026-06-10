@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import { Zapatilla } from '../../models/zapatilla';
 import { ZapatillasService } from '../../services/zapatillas.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 
 /**
@@ -17,11 +17,12 @@ import { take } from 'rxjs/operators';
 	templateUrl: './zapatillas.component.html',
 	styleUrl: './zapatillas.component.css'
 })
-export class ZapatillasComponent implements OnInit {
+export class ZapatillasComponent implements OnInit, OnDestroy {
 	public titulo: string = 'Componente de Zapatillas';
 	
 	// Yo contengo la suscripción a los datos en vivo de Firebase.
 	public zapatillas$: Observable<Zapatilla[]> = new Observable();
+	private zapatillasSub!: Subscription;
 	
 	// Yo almaceno las marcas únicas sin duplicados para mostrarlas en la vista.
 	public marcas: string[] = [];
@@ -51,14 +52,21 @@ export class ZapatillasComponent implements OnInit {
 	ngOnInit() {
         this.zapatillas$ = this.zapatillasService.obtenerZapatillas();
 		
-		// Yo uso 'Set' para garantizar que las marcas sean únicas de forma más limpia y moderna que un 'indexOf'.
-		this.zapatillas$.subscribe(zapatillas => {
+		// Guardamos esta suscripción en 'zapatillasSub' para poder destruirla en ngOnDestroy y evitar fugas de memoria
+		this.zapatillasSub = this.zapatillas$.subscribe(zapatillas => {
 			const marcasUnicas = new Set(zapatillas.map(z => z.marca));
 			this.marcas = Array.from(marcasUnicas);
         });
 
 		this.imprimirJson();
     }
+
+	ngOnDestroy() {
+		// Cerramos la suscripción manual al destruir el componente para evitar memory leaks
+		if (this.zapatillasSub) {
+			this.zapatillasSub.unsubscribe();
+		}
+	}
 	
 	/**
 	 * Yo agrego una nueva zapatilla. 

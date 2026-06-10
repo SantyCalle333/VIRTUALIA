@@ -38,8 +38,10 @@ export class DashboardComponent implements OnInit {
     this.ocultar_videojuegos = value;
   }
 
-  cerrarSesion() {
-    this.authService.logout();
+  // Convertimos a 'async' para obligar a la app a esperar a que Firebase termine el proceso de logout
+  async cerrarSesion() {
+    await this.authService.logout(); // await evita que el router navegue mientras la sesión aún existe
+    console.clear(); // Limpiamos la consola para destruir el historial visual de los datos de sesión (UX y Seguridad)
     this.router.navigate(['/login']);
   }
 }
