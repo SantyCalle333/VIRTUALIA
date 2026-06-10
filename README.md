@@ -1,6 +1,6 @@
-# AngularFinDeSemana 🚀
+# VIRTUALIA 🚀
 
-¡Bienvenido a **AngularFinDeSemana**! Este es un proyecto desarrollado implementando los más altos estándares de **Angular Moderno (Componentes Standalone)**, enfocado estrictamente en la **Limpieza de Código (Clean Code)**, la separación de responsabilidades y la eficiencia.
+¡Bienvenido a **VIRTUALIA**! Este es un proyecto desarrollado implementando los más altos estándares de **Angular Moderno (Componentes Standalone)**, enfocado estrictamente en la **Limpieza de Código (Clean Code)**, la separación de responsabilidades y la eficiencia.
 
 El sistema funciona como un panel de gestión visual de entidades (Zapatillas, Videojuegos, Cursos) conectado bidireccionalmente a la nube.
 
