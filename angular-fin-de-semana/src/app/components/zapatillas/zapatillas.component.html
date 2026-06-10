@@ -1,0 +1,100 @@
+<hr />
+
+<div class="Zapatillas">
+  <!-- Title showing number of brands in the array -->
+  <h2 style="color: var(--accent);">Zapatillas ({{ marcas.length }} marcas)</h2>
+
+  <!-- Iterate over basic array 'marcas' using the new @for control flow -->
+  <ul style="margin-bottom: 1.5rem; display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
+    @for (marca of marcas; track $index) {
+      <li style="background: rgba(255,255,255,0.05); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.85rem;">
+        {{ marca }}
+      </li>
+    }
+  </ul>
+
+  <!-- Iterate over the array of Objects 'zapatillas' from Firebase using AsyncPipe -->
+  @if (zapatillas$ | async; as zapatillas) {
+    @if (zapatillas.length === 0) {
+      <p style="color: #999; font-style: italic;">No hay zapatillas agregadas aún</p>
+    } @else {
+      <ul style="margin-bottom: 1.5rem; text-align: left; display: inline-block;">
+        <!-- In Angular 17+, we replace *ngFor with @for. We must provide a 'track' expression -->
+        @for (zapatilla of zapatillas; track $index) {
+          <li style="margin-bottom: 0.8rem; padding: 0.5rem; border: 1px solid var(--border); border-radius: 8px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem;">
+              <span>
+                <strong>{{ zapatilla.nombre }}</strong> de {{ zapatilla.marca }}
+                <span style="color: var(--accent); margin-left: 0.5rem;">${{ zapatilla.precio }}</span>
+                <!-- Replacing *ngIf with @if -->
+                @if (zapatilla.precio < 100) {
+                  <span style="background: #10b981; color: white; padding: 0.1rem 0.4rem; border-radius: 4px; font-size: 0.75rem; margin-left: 0.5rem;">¡Oferta!</span>
+                }
+              </span>
+              <button (click)="eliminarZapatilla(zapatilla)" style="background: #ef4444; padding: 0.2rem 0.5rem; font-size: 0.8rem;">Eliminar</button>
+            </div>
+          </li>
+        }
+      </ul>
+    }
+  }
+
+  <!-- Form controls with two-way data binding [(ngModel)] -->
+  <div style="display: flex; flex-direction: column; gap: 0.5rem; max-width: 400px; margin: 0 auto;">
+    <!-- 
+      Keydown event tracking
+      We bind the (input) event to onInputChange() and (keydown) to onKeyDown().
+      We also added a suggestion dropdown that mimics an autocomplete feature.
+    -->
+    <div style="position: relative; width: 100%;">
+      <p style="text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 0.2rem; text-align: left;">
+        {{ nuevoZapatilla || 'Ingresar Modelo' }}
+      </p>
+      <input
+        type="text"
+        [(ngModel)]="nuevoZapatilla"
+        (input)="onInputChange()"
+        (keydown)="onKeyDown($event)"
+        placeholder="Marca de zapatilla..."
+        style="width: 100%; box-sizing: border-box;"
+      />
+
+      <!-- Dropdown with suggestions shown when user types and suggestions exist -->
+      @if (mostrarSugerencias) {
+        <ul style="
+          position: absolute; 
+          top: 100%; 
+          left: 0; 
+          width: 100%; 
+          background: var(--bg-secondary); 
+          border: 1px solid var(--border); 
+          list-style: none; 
+          padding: 0; 
+          margin: 0; 
+          border-radius: 4px; 
+          z-index: 10;
+          box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        ">
+          <!-- We iterate over matched suggestions -->
+          @for (sug of sugerencias; track $index) {
+            <li 
+              (click)="seleccionarSugerencia(sug)"
+              (keydown.enter)="seleccionarSugerencia(sug)"
+              tabindex="0"
+              style="padding: 0.5rem; cursor: pointer; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: left;"
+              onmouseover="this.style.background='var(--primary)'; this.style.color='white'"
+              onmouseout="this.style.background='transparent'; this.style.color='var(--text-primary)'"
+            >
+              {{ sug }}
+            </li>
+          }
+        </ul>
+      }
+    </div>
+
+    <!-- Event bindings calling methods defined in TS -->
+    <div style="display: flex; gap: 0.5rem; justify-content: center; margin-top: 0.5rem;">
+      <button (click)="agregarZapatilla()">Agregar</button>
+    </div>
+  </div>
+</div>

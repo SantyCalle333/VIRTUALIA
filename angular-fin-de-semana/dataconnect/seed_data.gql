@@ -1,0 +1,34 @@
+mutation CreateSeedData @transaction {
+  user_insertMany(data: [
+    {
+      id: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11",
+      username: "alice",
+      email: "alice@example.com"
+    },
+    {
+      id: "b1f13c99-9c0b-4ef8-bb6d-6bb9bd380a22",
+      username: "bob",
+      email: "bob@example.com"
+    }
+  ])
+  event_insertMany(data: [
+    {
+      id: "c2d24c99-9c0b-4ef8-bb6d-6bb9bd380a33",
+      title: "Tech Meetup",
+      eventDate: "2024-12-01T18:00:00Z",
+      creatorId: "a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11"
+    }
+  ])
+  pollOption_insertMany(data: [
+    {
+      id: "d3e35c99-9c0b-4ef8-bb6d-6bb9bd380a44",
+      eventId: "c2d24c99-9c0b-4ef8-bb6d-6bb9bd380a33",
+      title: "Pizza"
+    },
+    {
+      id: "e4f46c99-9c0b-4ef8-bb6d-6bb9bd380a55",
+      eventId: "c2d24c99-9c0b-4ef8-bb6d-6bb9bd380a33",
+      title: "Sushi"
+    }
+  ])
+}

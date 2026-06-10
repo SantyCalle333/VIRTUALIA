@@ -1,0 +1,33 @@
+type User @table {
+  username: String!
+  email: String!
+  profilePictureUrl: String
+  bio: String
+}
+
+type Event @table {
+  title: String!
+  eventDate: Timestamp!
+  creator: User!
+  description: String
+  location: String
+  createdAt: Timestamp
+}
+
+type Participant @table {
+  event: Event!
+  user: User!
+  status: String! # Valores esperados: GOING, MAYBE, DECLINED
+}
+
+type PollOption @table {
+  event: Event!
+  title: String!
+  description: String
+  imageUrl: String
+}
+
+type Vote @table {
+  pollOption: PollOption!
+  user: User!
+}

@@ -1,0 +1,49 @@
+/* Container for the main App */
+:host {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+  gap: 2rem;
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* Style the component host wrappers to look like premium cards */
+app-videojuegos,
+app-zapatillas-core,
+app-cursos {
+  width: 100%;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+app-videojuegos:hover,
+app-zapatillas-core:hover,
+app-cursos:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+}
+
+/* Title adjustments inside app component */
+h1 {
+  /* Using important just in case the HTML inline style overrides */
+  margin-bottom: 0.5rem !important;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
